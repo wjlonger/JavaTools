@@ -1,11 +1,4 @@
-/**
- * �ϴ��ļ���
- */
 package com.coder.util;
-
-/**
- * @author advance
- */
 
 import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
@@ -22,10 +15,10 @@ import java.util.Date;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class UploadHelper {
+public final class UploadHelper {
 
-    public final static String separator = "/";
-    public final static String split = "_";
+    public static final String separator = "/";
+    public static final String split = "_";
 
     protected final Log log = LogFactory.getLog(getClass());
 
@@ -71,11 +64,6 @@ public class UploadHelper {
         }
     }
 
-    /**
-     * This method checks if the given file exists on disk. If it does it's ignored because
-     * that means that the file is allready cached on the server. If not we dump
-     * the text on it.
-     */
     public void dumpAttributeToFile(String attributeValue, String fileName, String filePath) throws Exception {
         File outputFile = new File(filePath + separator + fileName);
         PrintWriter pw = new PrintWriter(new FileWriter(outputFile));
@@ -83,12 +71,6 @@ public class UploadHelper {
         pw.close();
     }
 
-    /**
-     * �����ļ�
-     * This method checks if the given file exists on disk. If it does it's ignored because
-     * that means that the file is allready cached on the server. If not we take out the stream from the
-     * digitalAsset-object and dumps it.
-     */
     public void dumpAsset(File file, String fileName, String filePath) throws Exception {
         long timer = System.currentTimeMillis();
 
@@ -115,13 +97,6 @@ public class UploadHelper {
         log.info("Time for dumping file " + fileName + ":" + (System.currentTimeMillis() - timer));
     }
 
-    /**
-     * ��������ͼ
-     * This method checks if the given file exists on disk. If it does it's ignored because
-     * that means that the file is allready cached on the server. If not we take out the stream from the
-     * digitalAsset-object and dumps a thumbnail to it.
-     */
-
     public void dumpAssetThumbnail(File file, String fileName, String thumbnailFile, String filePath, int width, int height, int quality) throws Exception {
         long timer = System.currentTimeMillis();
         log.info("fileName:" + fileName);
@@ -139,10 +114,7 @@ public class UploadHelper {
         log.info("Time for dumping file " + fileName + ":" + (System.currentTimeMillis() - timer));
     }
 
-    /**
-     * This method removes all images in the digitalAsset directory which belongs to a certain digital asset.
-     */
-    public void deleteDigitalAssets(String filePath, String filePrefix) throws Exception {
+    public void deleteDigitalAssets(String filePath, String filePrefix){
         try {
             File assetDirectory = new File(filePath);
             File[] files = assetDirectory.listFiles(new FilenameFilterImpl(filePrefix));

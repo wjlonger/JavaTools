@@ -2,7 +2,7 @@ package com.coder.util;
 
 import java.io.*;
 
-public class Md5 {
+public final class Md5 {
     private static final int BUFFER_SIZE = 1024;
 
     private static final int S11 = 7;
@@ -71,34 +71,34 @@ public class Md5 {
         return (y ^ (x | (~z)));
     }
 
-    private final int rotate_left(int x, int n) {
+    private final int rotateLeft(int x, int n) {
         return ((x << n) | (x >>> (32 - n)));
     }
 
     private final int FF(int a, int b, int c, int d, int x, int s, int ac) {
         a += (F(b, c, d) + x + ac);
-        a = rotate_left(a, s);
+        a = rotateLeft(a, s);
         a += b;
         return a;
     }
 
     private final int GG(int a, int b, int c, int d, int x, int s, int ac) {
         a += (G(b, c, d) + x + ac);
-        a = rotate_left(a, s);
+        a = rotateLeft(a, s);
         a += b;
         return a;
     }
 
     private final int HH(int a, int b, int c, int d, int x, int s, int ac) {
         a += (H(b, c, d) + x + ac);
-        a = rotate_left(a, s);
+        a = rotateLeft(a, s);
         a += b;
         return a;
     }
 
     private final int II(int a, int b, int c, int d, int x, int s, int ac) {
         a += (I(b, c, d) + x + ac);
-        a = rotate_left(a, s);
+        a = rotateLeft(a, s);
         a += b;
         return a;
     }
@@ -207,8 +207,9 @@ public class Md5 {
         if (len >= partLen) {
             System.arraycopy(input, 0, buffer, index, partLen);
             transform(buffer, 0);
-            for (i = partLen; i + 63 < len; i += 64)
+            for (i = partLen; i + 63 < len; i += 64){
                 transform(input, i);
+            }
             index = 0;
         } else {
             i = 0;
@@ -228,7 +229,6 @@ public class Md5 {
         return encode(state, 16);
     }
 
-    // Encode the content.state array into 16 bytes array
     private byte[] encode(int input[], int len) {
         byte output[] = new byte[len];
         int i = 0;
@@ -241,16 +241,6 @@ public class Md5 {
         }
         return output;
     }
-
-    /**
-     * Get the digest for our input stream.
-     * This method constructs the input stream digest, and return it, as a
-     * a String, following the MD5 (rfc1321) algorithm,
-     *
-     * @return An instance of String, giving the message digest.
-     * @throws IOException Thrown if the digestifier was unable to read the
-     *                     input stream.
-     */
 
     public byte[] getDigest() throws IOException {
         byte buffer[] = new byte[BUFFER_SIZE];
@@ -266,12 +256,6 @@ public class Md5 {
         return digest;
     }
 
-    /**
-     * Get the digest, for this string digestifier.
-     * This method doesn't throw any IOException, since it knows that the
-     * underlying stream ws built from a String.
-     */
-
     public byte[] processString() {
         if (!stringp) {
             throw new RuntimeException(this.getClass().getName() + "[processString]" + " not a string.");
@@ -285,10 +269,6 @@ public class Md5 {
                 + ": implementation error.");
     }
 
-    /**
-     * Get the digest, as a proper string.
-     */
-
     public String getStringDigest() {
         if (digest == null) {
             throw new RuntimeException(this.getClass().getName()
@@ -297,14 +277,6 @@ public class Md5 {
         }
         return stringify(digest);
     }
-
-
-    /**
-     * Construct a digestifier for the given string.
-     *
-     * @param input    The string to be digestified.
-     * @param enc the encoding name used (such as UTF8)
-     */
 
     public Md5(String input, String enc) {
         byte bytes[] = null;
@@ -324,21 +296,9 @@ public class Md5 {
         state[3] = 0x10325476;
     }
 
-    /**
-     * Construct a digestifier for the given string.
-     *
-     * @param input The string to be digestified.
-     */
-
     public Md5(String input) {
         this(input, "UTF8");
     }
-
-    /**
-     * Construct a digestifier for the given input stream.
-     *
-     * @param in The input stream to be digestified.
-     */
 
     public Md5(InputStream in) {
         this.stringp = false;
@@ -352,7 +312,7 @@ public class Md5 {
         state[3] = 0x10325476;
     }
 
-    public void hmac_Md5(String text, String key) throws IOException {
+    public void hmacMd5(String text, String key) throws IOException {
         //byte disgest[] = new byte[16] ;
         //byte output[] = new byte[32] ;
         //output[33] = ( byte ) '\0' ;
@@ -393,6 +353,5 @@ public class Md5 {
         md51.update(digest, 16);
         digest = md51.getDigest();
     }
-
 
 }

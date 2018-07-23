@@ -3,7 +3,7 @@ package com.coder.util;
 import java.util.*;
 import java.text.*;
 
-public class DateHandler {
+public final class DateHandler {
 
     public static int openDay = 5;
     private String iDate = "";

@@ -8,11 +8,7 @@ import java.io.FileFilter;
 import java.util.Enumeration;
 import java.util.Hashtable;
 
-/**
- * @author advance
- *
- */
-public class MyFileFilter implements FileFilter {
+public final class MyFileFilter implements FileFilter {
 
     private Hashtable filters = null;
     private String description = null;

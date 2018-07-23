@@ -3,7 +3,7 @@ package com.coder.util;
 import java.util.*;
 import java.util.regex.*;
 
-public class RegExUtil {
+public final class RegExUtil {
 
     public static final boolean ereg(String pattern, String str) throws PatternSyntaxException {
         try {
@@ -15,11 +15,11 @@ public class RegExUtil {
         }
     }
 
-    public static final String ereg_replace(String pattern, String newstr, String str) throws PatternSyntaxException {
+    public static final String eregReplace(String pattern, String newStr, String str) throws PatternSyntaxException {
         try {
             Pattern p = Pattern.compile(pattern);
             Matcher m = p.matcher(str);
-            return m.replaceAll(newstr);
+            return m.replaceAll(newStr);
         } catch (PatternSyntaxException e) {
             throw e;
         }
@@ -31,7 +31,7 @@ public class RegExUtil {
             Pattern p = Pattern.compile(pattern);
             Matcher m = p.matcher(str);
             while (m.find()) {
-                vector.add(ereg_replace("(\\[\\#)|(\\#\\])", "", m.group()));
+                vector.add(eregReplace("(\\[\\#)|(\\#\\])", "", m.group()));
             }
             return vector;
         } catch (PatternSyntaxException e) {
@@ -46,7 +46,7 @@ public class RegExUtil {
             String[] array = new String[m.groupCount()];
             int i = 0;
             while (m.find()) {
-                array[i] = ereg_replace("(\\[\\#)|(\\#\\])", "", m.group());
+                array[i] = eregReplace("(\\[\\#)|(\\#\\])", "", m.group());
                 i++;
             }
             return array;
@@ -85,7 +85,7 @@ public class RegExUtil {
         }
     }
 
-    public static String escapeDollarBackslash(String original) {
+    public static final String escapeDollarBackslash(String original) {
         StringBuffer buffer = new StringBuffer(original.length());
         for (int i = 0; i < original.length(); i++) {
             char c = original.charAt(i);

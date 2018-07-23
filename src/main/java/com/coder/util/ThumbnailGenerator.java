@@ -10,7 +10,7 @@ import java.awt.RenderingHints;
 import java.awt.image.BufferedImage;
 import java.io.File;
 
-public class ThumbnailGenerator {
+public final class ThumbnailGenerator {
 
     public void transform(String originalFile, String thumbnailFile, int thumbWidth, int thumbHeight) throws Exception {
         Image image = javax.imageio.ImageIO.read(new File(originalFile));

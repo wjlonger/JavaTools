@@ -3,7 +3,7 @@
  */
 package com.coder.util;
 
-public class IPDeal {
+public final class IPDeal {
 
 	public static String strfullip(String ip){
 		StringBuffer buff = new StringBuffer();

@@ -2,7 +2,7 @@ package com.coder.util;
 
 import java.security.MessageDigest;
 
-public class MD5Encrypt {
+public final class MD5Encrypt {
 
     public MD5Encrypt() {
     }

@@ -24,7 +24,6 @@ public final class ExecHelper {
 		return new ExecHelper(Runtime.getRuntime().exec(cmdarray, envp), charset);
 	}
 
-
 	public static ExecHelper exec(String[] cmdarray, String[] envp, File dir, String charset) throws IOException {
 		return new ExecHelper(Runtime.getRuntime().exec(cmdarray, envp), charset);
 	}
@@ -32,7 +31,6 @@ public final class ExecHelper {
 	public static ExecHelper execUsingShell(String command) throws IOException {
 		return execUsingShell(command, null);
 	}
-
 
 	public static ExecHelper execUsingShell(String command, String charset) throws IOException {
 		if (command == null) {
@@ -119,56 +117,20 @@ public final class ExecHelper {
 		this.error = error.toString();
 	}
 
-	/**
-	 * The output of the job that ran.
-	 *
-	 * @since ostermillerutils 1.06.00
-	 */
 	private String output;
 
-	/**
-	 * Get the output of the job that ran.
-	 *
-	 * @return Everything the executed process wrote to its standard output as a String.
-	 *
-	 * @since ostermillerutils 1.06.00
-	 */
 	public String getOutput(){
 		return output;
 	}
 
-	/**
-	 * The error output of the job that ran.
-	 *
-	 * @since ostermillerutils 1.06.00
-	 */
 	private String error;
 
-	/**
-	 * Get the error output of the job that ran.
-	 *
-	 * @return Everything the executed process wrote to its standard error as a String.
-	 *
-	 * @since ostermillerutils 1.06.00
-	 */
 	public String getError(){
 		return error;
 	}
 
-	/**
-	 * The status of the job that ran.
-	 *
-	 * @since ostermillerutils 1.06.00
-	 */
 	private int status;
 
-	/**
-	 * Get the status of the job that ran.
-	 *
-	 * @return exit status of the executed process, by convention, the value 0 indicates normal termination.
-	 *
-	 * @since ostermillerutils 1.06.00
-	 */
 	public int getStatus(){
 		return status;
 	}

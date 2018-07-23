@@ -1,6 +1,6 @@
 package com.coder.util;
 
-public class ConstUtils {
+public final class ConstUtils {
 
     public static final int KB = 1024;
     public static final int MB = 1048576;

@@ -3,7 +3,7 @@ package com.coder.util;
 import java.util.*;
 import java.io.*;
 
-public class PropsUtil {
+public final class PropsUtil {
 
     public PropsUtil() {
     }

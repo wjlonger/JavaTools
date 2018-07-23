@@ -4,7 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 
-public class CloseUtils {
+public final class CloseUtils {
 
     public static void closeIO(InputStream is){
         if(is != null){

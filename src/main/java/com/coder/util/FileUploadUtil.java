@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public class FileUploadUtil {
+public final class FileUploadUtil {
 
     private String tempPath = null;
 
@@ -40,7 +40,7 @@ public class FileUploadUtil {
         this.fileuploadReq = fileuploadRequest;
     }
 
-    public boolean Upload() {
+    public final boolean Upload() {
         DiskFileItemFactory factory = new DiskFileItemFactory();
         try {
             // FileUtil.makeDirectory(dstPath + "/ddd");
@@ -119,18 +119,18 @@ public class FileUploadUtil {
         return true;
     }
 
-    public String GetFileName(String filepath) {
-        String returnstr = "*.*";
+    public final String GetFileName(String filepath) {
+        String returnStr = "*.*";
         int length = filepath.trim().length();
         filepath = filepath.replace('\\', '/');
         if (length > 0) {
             int i = filepath.lastIndexOf("/");
             if (i >= 0) {
                 filepath = filepath.substring(i + 1);
-                returnstr = filepath;
+                returnStr = filepath;
             }
         }
-        return returnstr;
+        return returnStr;
     }
 
     public void setTmpPath(String tmppath) {
