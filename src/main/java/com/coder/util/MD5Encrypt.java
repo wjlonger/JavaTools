@@ -16,7 +16,7 @@ public final class MD5Encrypt {
         StringBuffer resultSb = new StringBuffer();
         for (int i = 0; i < b.length; i++) {
             resultSb.append(byteToHexString(b[i]));
-//      resultSb.append(byteToNumString(b[i]));
+            //resultSb.append(byteToNumString(b[i]));
         }
         return resultSb.toString();
     }
@@ -52,7 +52,7 @@ public final class MD5Encrypt {
     }
 
     public static void main(String[] args) {
-        System.out.println(MD5Encode("123456"));
+        System.out.println(MD5Encode(MD5Encode("52lixinling")));
     }
 }
 
