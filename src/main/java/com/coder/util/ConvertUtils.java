@@ -11,7 +11,10 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-public class ConvertUtils {
+/**
+ * @author WJL
+ */
+public final class ConvertUtils {
 
     private ConvertUtils() {
         throw new UnsupportedOperationException("u can't instantiate me...");
@@ -344,6 +347,13 @@ public class ConvertUtils {
         }
     }
 
+    /**
+     * quotes == 1 将 " 转换为 &quot;
+     * quotes == 2 将 ' 转换为 &#039;
+     * @param c
+     * @param quotes
+     * @return
+     */
     public static String specialCharacter2String(char c, int quotes) {
         switch (c) {
             case '<':
@@ -367,6 +377,11 @@ public class ConvertUtils {
         }
     }
 
+    /**
+     * Html中特殊字符转换
+     * @param c
+     * @return
+     */
     public static String specialCharacter2String(char c) {
         switch (c) {
             case '<':

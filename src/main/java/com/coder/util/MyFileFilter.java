@@ -48,7 +48,7 @@ public final class MyFileFilter implements FileFilter {
 		}
     }
 
-    public boolean accept(File f) {
+    public  boolean accept(File f) {
 		if(f != null) {
 		    if(f.isDirectory()) {
 			return true;

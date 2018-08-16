@@ -41,13 +41,13 @@ public final class FileUtil {
         touch(file);
     }
 
-    public static final void touch(File[] files) {
+    public static void touch(File[] files) {
         for (int i = 0; i < files.length; i++) {
             touch(files[i]);
         }
     }
 
-    public static final void touch(String[] fileNames) {
+    public static void touch(String[] fileNames) {
         File[] files = new File[fileNames.length];
         for (int i = 0; i < fileNames.length; i++) {
             files[i] = new File(fileNames[i]);
@@ -55,11 +55,11 @@ public final class FileUtil {
         touch(files);
     }
 
-    public static final boolean isFileExist(String fileName) {
+    public static boolean isFileExist(String fileName) {
         return new File(fileName).isFile();
     }
 
-    public static final boolean makeDirectory(File file) {
+    public static boolean makeDirectory(File file) {
         File parent = file.getParentFile();
         if (parent != null) {
             return parent.mkdirs();
@@ -67,12 +67,12 @@ public final class FileUtil {
         return false;
     }
 
-    public static final boolean makeDirectory(String fileName) {
+    public static boolean makeDirectory(String fileName) {
         File file = new File(fileName);
         return makeDirectory(file);
     }
 
-    public static final boolean emptyDirectory(File directory) {
+    public static boolean emptyDirectory(File directory) {
         boolean result = true;
         File[] entries = directory.listFiles();
         for (int i = 0; i < entries.length; i++) {
@@ -83,16 +83,16 @@ public final class FileUtil {
         return result;
     }
 
-    public static final boolean emptyDirectory(String directoryName) {
+    public static boolean emptyDirectory(String directoryName) {
         File dir = new File(directoryName);
         return emptyDirectory(dir);
     }
 
-    public static final boolean deleteDirectory(String dirName) {
+    public static boolean deleteDirectory(String dirName) {
         return deleteDirectory(new File(dirName));
     }
 
-    public static final boolean deleteDirectory(File dir) {
+    public static boolean deleteDirectory(File dir) {
         if ((dir == null) || !dir.isDirectory()) {
             throw new IllegalArgumentException("Argument " + dir +
                     " is not a directory. ");
@@ -119,7 +119,7 @@ public final class FileUtil {
         return true;
     }
 
-    public static final File[] listAll(File file, FileFilter filter) {
+    public static File[] listAll(File file, FileFilter filter) {
         ArrayList list = new ArrayList();
         File[] files;
         if (!file.exists() || file.isFile()) {
@@ -131,7 +131,7 @@ public final class FileUtil {
         return files;
     }
 
-    public static final void list(ArrayList list, File file, FileFilter filter) {
+    public static void list(ArrayList list, File file, FileFilter filter) {
         if (filter.accept(file)) {
             list.add(file);
             if (file.isFile()) {
@@ -147,32 +147,32 @@ public final class FileUtil {
 
     }
 
-    public static final URL getURL(File file) throws MalformedURLException {
+    public static URL getURL(File file) throws MalformedURLException {
         String fileURL = "file:/" + file.getAbsolutePath();
         URL url = new URL(fileURL);
         return url;
     }
 
-    public static final String getFileName(String filePath) {
+    public static String getFileName(String filePath) {
         File file = new File(filePath);
         return file.getName();
     }
 
-    public static final String getFilePath(String fileName) {
+    public static String getFilePath(String fileName) {
         File file = new File(fileName);
         return file.getAbsolutePath();
     }
 
-    public static final String toUNIXpath(String filePath) {
+    public static String toUNIXpath(String filePath) {
         return filePath.replace('\\', '/');
     }
 
-    public static final String getUNIXfilePath(String fileName) {
+    public static String getUNIXfilePath(String fileName) {
         File file = new File(fileName);
         return toUNIXpath(file.getAbsolutePath());
     }
 
-    public static final String getTypePart(String fileName) {
+    public static String getTypePart(String fileName) {
         int point = fileName.lastIndexOf('.');
         int length = fileName.length();
         if (point == -1 || point == length - 1) {
@@ -182,11 +182,11 @@ public final class FileUtil {
         }
     }
 
-    public static final String getFileType(File file) {
+    public static String getFileType(File file) {
         return getTypePart(file.getName());
     }
 
-    public static final String getNamePart(String fileName) {
+    public static String getNamePart(String fileName) {
         int point = getPathLsatIndex(fileName);
         int length = fileName.length();
         if (point == -1) {
@@ -207,7 +207,7 @@ public final class FileUtil {
         }
     }
 
-    public static final String getPathPart(String fileName) {
+    public static String getPathPart(String fileName) {
         int point = getPathLsatIndex(fileName);
         int length = fileName.length();
         if (point == -1) {
@@ -224,7 +224,7 @@ public final class FileUtil {
         }
     }
 
-    public static final int getPathIndex(String fileName) {
+    public static int getPathIndex(String fileName) {
         int point = fileName.indexOf('/');
         if (point == -1) {
             point = fileName.indexOf('\\');
@@ -232,7 +232,7 @@ public final class FileUtil {
         return point;
     }
 
-    public static final int getPathIndex(String fileName, int fromIndex) {
+    public static int getPathIndex(String fileName, int fromIndex) {
         int point = fileName.indexOf('/', fromIndex);
         if (point == -1) {
             point = fileName.indexOf('\\', fromIndex);
@@ -240,7 +240,7 @@ public final class FileUtil {
         return point;
     }
 
-    public static final int getPathLsatIndex(String fileName) {
+    public static int getPathLsatIndex(String fileName) {
         int point = fileName.lastIndexOf('/');
         if (point == -1) {
             point = fileName.lastIndexOf('\\');
@@ -248,7 +248,7 @@ public final class FileUtil {
         return point;
     }
 
-    public static final int getPathLsatIndex(String fileName, int fromIndex) {
+    public static int getPathLsatIndex(String fileName, int fromIndex) {
         int point = fileName.lastIndexOf('/', fromIndex);
         if (point == -1) {
             point = fileName.lastIndexOf('\\', fromIndex);
@@ -256,7 +256,7 @@ public final class FileUtil {
         return point;
     }
 
-    public static final String trimType(String filename) {
+    public static String trimType(String filename) {
         int index = filename.lastIndexOf(".");
         if (index != -1) {
             return filename.substring(0, index);
@@ -265,7 +265,7 @@ public final class FileUtil {
         }
     }
 
-    public static final String getSubpath(String pathName, String fileName) {
+    public static String getSubpath(String pathName, String fileName) {
         int index = fileName.indexOf(pathName);
         if (index != -1) {
             return fileName.substring(index + pathName.length() + 1);
@@ -274,13 +274,7 @@ public final class FileUtil {
         }
     }
 
-    public static final boolean pathValidate(String path) {
-        //String path="d:/web/www/sub";
-        //System.out.println(path);
-        //path = getUNIXfilePath(path);
-
-        //path = ereg_replace("^\\/+", "", path);
-        //path = ereg_replace("\\/+$", "", path);
+    public static boolean pathValidate(String path) {
         String[] arraypath = path.split("/");
         String tmppath = "";
         for (int i = 0; i < arraypath.length; i++) {
@@ -296,7 +290,7 @@ public final class FileUtil {
         return true;
     }
 
-    public static final String getFileContent(String path) throws IOException {
+    public static String getFileContent(String path) throws IOException {
         String filecontent = "";
         try {
             File f = new File(path);
@@ -317,7 +311,7 @@ public final class FileUtil {
         return filecontent;
     }
 
-    public static final boolean genModuleTpl(String path, String modulecontent) throws IOException {
+    public static boolean genModuleTpl(String path, String modulecontent) throws IOException {
 
         path = getUNIXfilePath(path);
         String[] patharray = path.split("\\/");
@@ -342,7 +336,7 @@ public final class FileUtil {
         return true;
     }
 
-    public static final String getPicExtendName(String pic_path) {
+    public static String getPicExtendName(String pic_path) {
         pic_path = getUNIXfilePath(pic_path);
         String pic_extend = "";
         if (isFileExist(pic_path + ".gif")) {
@@ -360,7 +354,7 @@ public final class FileUtil {
         return pic_extend; //����ͼƬ��չ��
     }
 
-    public static final boolean copyFile(File in, File out) throws Exception {
+    public static boolean copyFile(File in, File out) throws Exception {
         try {
             FileInputStream fis = new FileInputStream(in);
             FileOutputStream fos = new FileOutputStream(out);
@@ -378,7 +372,7 @@ public final class FileUtil {
         }
     }
 
-    public static final boolean CopyFile(String infile, String outfile) throws Exception {
+    public static boolean CopyFile(String infile, String outfile) throws Exception {
         try {
             File in = new File(infile);
             File out = new File(outfile);
@@ -390,7 +384,7 @@ public final class FileUtil {
 
     }
 
-    public static final int countPics(String id, String dtime, String extensions) {
+    public static int countPics(String id, String dtime, String extensions) {
         int counts = 0;
         MyFileFilter mfilter = new MyFileFilter(extensions.split(","));
         PropsUtil pu = new PropsUtil();

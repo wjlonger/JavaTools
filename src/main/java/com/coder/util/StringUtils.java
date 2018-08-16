@@ -1,5 +1,8 @@
 package com.coder.util;
 
+import com.sun.istack.internal.NotNull;
+import sun.invoke.empty.Empty;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -15,6 +18,19 @@ import static com.coder.util.ConvertUtils.specialCharacter2String;
  * @author WJL
  */
 public final class StringUtils {
+
+    public static final String EMPTY = "";
+    public static final String GB2312 = "GB2312";
+    public static final String ISO88591 = "ISO-8859-1";
+    public static final String UTF8 = "UTF-8";
+    public static final String UTF16 = "UTF16";
+    public static final String UTF32 = "UTF32";
+    public static final String GBK = "GBK";
+    public static final String PERCENT_E = "%e";
+    public static final char CHAR_PERCENT = '%';
+    public static final String STRING_PERCENT = "%";
+
+
     private static final String[] hex = { "00", "01", "02", "03", "04", "05",
             "06", "07", "08", "09", "0A", "0B", "0C", "0D", "0E", "0F", "10",
             "11", "12", "13", "14", "15", "16", "17", "18", "19", "1A", "1B",
@@ -64,868 +80,6 @@ public final class StringUtils {
             0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
             0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
             0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F };
-
-    public static String escape(String s) {
-        StringBuffer sbuf = new StringBuffer();
-        int len = s.length();
-        for (int i = 0; i < len; i++) {
-            int ch = s.charAt(i);
-            if ('A' <= ch && ch <= 'Z') {
-                sbuf.append((char) ch);
-            } else if ('a' <= ch && ch <= 'z') {
-                sbuf.append((char) ch);
-            } else if ('0' <= ch && ch <= '9') {
-                sbuf.append((char) ch);
-            } else if (ch == '-' || ch == '_' || ch == '.' || ch == '!'
-                    || ch == '~' || ch == '*' || ch == '\'' || ch == '('
-                    || ch == ')') {
-                sbuf.append((char) ch);
-            } else if (ch <= 0x007F) {
-                sbuf.append('%');
-                sbuf.append(hex[ch]);
-            } else {
-                sbuf.append('%');
-                sbuf.append('u');
-                sbuf.append(hex[(ch >>> 8)]);
-                sbuf.append(hex[(0x00FF & ch)]);
-            }
-        }
-        return sbuf.toString();
-    }
-
-    public static String unescape(String s) {
-        StringBuffer sbuf = new StringBuffer();
-        int i = 0;
-        int len = s.length();
-        while (i < len) {
-            int ch = s.charAt(i);
-            if ('A' <= ch && ch <= 'Z') {
-                sbuf.append((char) ch);
-            } else if ('a' <= ch && ch <= 'z') {
-                sbuf.append((char) ch);
-            } else if ('0' <= ch && ch <= '9') {
-                sbuf.append((char) ch);
-            } else if (ch == '-' || ch == '_' || ch == '.' || ch == '!'
-                    || ch == '~' || ch == '*' || ch == '\'' || ch == '('
-                    || ch == ')') {
-                sbuf.append((char) ch);
-            } else if (ch == '%') {
-                int cint = 0;
-                if ('u' != s.charAt(i + 1)) {
-                    cint = (cint << 4) | val[s.charAt(i + 1)];
-                    cint = (cint << 4) | val[s.charAt(i + 2)];
-                    i += 2;
-                } else {
-                    cint = (cint << 4) | val[s.charAt(i + 2)];
-                    cint = (cint << 4) | val[s.charAt(i + 3)];
-                    cint = (cint << 4) | val[s.charAt(i + 4)];
-                    cint = (cint << 4) | val[s.charAt(i + 5)];
-                    i += 5;
-                }
-                sbuf.append((char) cint);
-            } else {
-                sbuf.append((char) ch);
-            }
-            i++;
-        }
-        return sbuf.toString();
-    }
-
-    public static boolean isNullOrSpace(String s){
-
-        if(s == null || "".equals(s.trim())){
-            return true;
-        }
-        return false;
-    }
-
-    public static boolean isNullOrEmpty(String s){
-
-        if(s == null || s.length() == 0){
-            return true;
-        }
-        return false;
-    }
-
-    public static String join(Collection<String> c, String s){
-        StringBuilder sb = new StringBuilder();
-        for(String t : c){
-            sb.append(t);
-            sb.append(s);
-        }
-        return sb.toString();
-    }
-
-    public static String iso885912GB2312(String text) {
-        String result = "";
-        try {
-            result = new String(text.getBytes("ISO-8859-1"), "GB2312");
-        } catch (UnsupportedEncodingException ex) {
-            result = ex.toString();
-        }
-        return result;
-    }
-
-    public static String isO885912GBK(String text) {
-        try {
-            if (text == null) {
-                return "";
-            } else {
-                text = text.trim();
-                text = new String(text.getBytes("ISO8859_1"), "GBK");
-                return text;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    public static String isO885912UTF8(String text) {
-        try {
-            if (text == null) {
-                return "";
-            } else {
-                text = new String(text.getBytes("ISO-8859-1"), "UTF-8");
-                return text;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    public static String utf82GBK(String text) {
-        try {
-            if (text == null) {
-                return "";
-            } else {
-                text = text.trim();
-                text = new String(text.getBytes("UTF-8"), "GBK");
-                return text;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    public static String utf82ISO88591(String text) {
-        try {
-            if (text == null) {
-                return "";
-            } else {
-                text = new String(text.getBytes("UTF-8"), "ISO-8859-1");
-                return text;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    public static String gbk2ISO88591(String text) {
-        try {
-            if (text == null) {
-                return "";
-            } else {
-                text = new String(text.getBytes("GBK"), "ISO8859_1");
-                return text;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    public static String gbk2UTF8(String text) {
-        try {
-            if (text == null) {
-                return "";
-            } else {
-                text = new String(text.getBytes("GBK"), "UTF-8");
-                return text;
-            }
-        } catch (Exception exp) {
-            return "";
-        }
-    }
-
-    public static String gb23122ISO88591(String text) {
-        String result = "";
-        try {
-            result = new String(text.getBytes("GB2312"), "ISO-8859-1");
-        } catch (UnsupportedEncodingException ex) {
-            ex.printStackTrace();
-        }
-        return result;
-    }
-
-    public static String utf8URLencode(String text) {
-        StringBuffer result = new StringBuffer();
-        for (int i = 0; i < text.length(); i++) {
-            char c = text.charAt(i);
-            if (c >= 0 && c <= 255) {
-                result.append(c);
-            } else {
-                byte[] b = new byte[0];
-                try {
-                    b = Character.toString(c).getBytes("UTF-8");
-                } catch (Exception ex) {
-                }
-                for (int j = 0; j < b.length; j++) {
-                    int k = b[j];
-                    if (k < 0) {
-                        k += 256;
-                    }
-                    result.append("%" + Integer.toHexString(k).toUpperCase());
-                }
-            }
-        }
-        return result.toString();
-    }
-
-    public static String utf8URLdecode(String text) {
-        String result = "";
-        int p = 0;
-        if (text != null && text.length() > 0) {
-            text = text.toLowerCase();
-            p = text.indexOf("%e");
-            if (p == -1) {
-                return text;
-            }
-            while (p != -1) {
-                result += text.substring(0, p);
-                text = text.substring(p, text.length());
-                if (text == "" || text.length() < 9) {
-                    return result;
-                }
-                result += codeToWord(text.substring(0, 9));
-                text = text.substring(9, text.length());
-                p = text.indexOf("%e");
-            }
-        }
-        return result + text;
-    }
-
-    private static String codeToWord(String text) {
-        String result;
-        if (utf8CodeCheck(text)) {
-            byte[] code = new byte[3];
-            code[0] = (byte) (Integer.parseInt(text.substring(1, 3), 16) - 256);
-            code[1] = (byte) (Integer.parseInt(text.substring(4, 6), 16) - 256);
-            code[2] = (byte) (Integer.parseInt(text.substring(7, 9), 16) - 256);
-            try {
-                result = new String(code, "UTF-8");
-            } catch (UnsupportedEncodingException ex) {
-                result = null;
-            }
-        } else {
-            result = text;
-        }
-        return result;
-    }
-
-    private static boolean utf8CodeCheck(String text) {
-        String sign = "";
-        if (text.startsWith("%e")) {
-            for (int p = 0; p != -1;) {
-                p = text.indexOf("%", p);
-                if (p != -1) {
-                    p++;
-                }
-                sign += p;
-            }
-        }
-        return "147-1".equals(sign);
-    }
-
-    public static boolean isUTF8URL(String text) {
-        text = text.toLowerCase();
-        int p = text.indexOf("%");
-        if (p != -1 && text.length() - p > 9) {
-            text = text.substring(p, p + 9);
-        }
-        return utf8CodeCheck(text);
-    }
-
-    public static String replace1(String strSrc, String strOld, String strNew) {
-        if (strSrc == null || strOld == null || strNew == null) {
-            return "";
-        }
-        int i = 0;
-        if (strOld.equals(strNew)) {
-            return strSrc;
-        }
-        if ((i = strSrc.indexOf(strOld, i)) >= 0) {
-            char[] arr_cSrc = strSrc.toCharArray();
-            char[] arr_cNew = strNew.toCharArray();
-            int intOldLen = strOld.length();
-            StringBuffer buf = new StringBuffer(arr_cSrc.length);
-            buf.append(arr_cSrc, 0, i).append(arr_cNew);
-            i += intOldLen;
-            int j = i;
-            while ((i = strSrc.indexOf(strOld, i)) > 0) {
-                buf.append(arr_cSrc, j, i - j).append(arr_cNew);
-                i += intOldLen;
-                j = i;
-            }
-            buf.append(arr_cSrc, j, arr_cSrc.length - j);
-            return buf.toString();
-        }
-        return strSrc;
-    }
-
-    public static String htmlEncode(String strSrc) {
-        if (strSrc == null) {
-            return "";
-        }
-        char[] arr_cSrc = strSrc.toCharArray();
-        StringBuffer buf = new StringBuffer(arr_cSrc.length);
-        char ch;
-        for (int i = 0; i < arr_cSrc.length; i++) {
-            ch = arr_cSrc[i];
-            buf.append(specialCharacter2String(ch));
-        }
-        return buf.toString();
-    }
-
-    public static String htmlEncode(String strSrc, int quotes) {
-        if (strSrc == null) {
-            return "";
-        }
-        if (quotes == 0) {
-            return htmlEncode(strSrc);
-        }
-        char[] arr_cSrc = strSrc.toCharArray();
-        StringBuffer buf = new StringBuffer(arr_cSrc.length);
-        char ch;
-        for (int i = 0; i < arr_cSrc.length; i++) {
-            ch = arr_cSrc[i];
-            buf.append(specialCharacter2String(ch, quotes));
-        }
-        return buf.toString();
-    }
-
-    public static String htmlDecode(String strSrc) {
-        if (strSrc == null) {
-            return "";
-        }
-        strSrc = strSrc.replaceAll("&lt;", "<");
-        strSrc = strSrc.replaceAll("&gt;", ">");
-        strSrc = strSrc.replaceAll("&quot;", "\"");
-        strSrc = strSrc.replaceAll("&#039;", "'");
-        strSrc = strSrc.replaceAll("&amp;", "&");
-        return strSrc;
-    }
-
-    public static String md5(String s) {
-        try {
-            byte[] strTemp = s.getBytes();
-            MessageDigest mdTemp = MessageDigest.getInstance("MD5");
-            mdTemp.update(strTemp);
-            byte[] md = mdTemp.digest();
-            int j = md.length;
-            char str[] = new char[j * 2];
-            int k = 0;
-            for (int i = 0; i < j; i++) {
-                byte byte0 = md[i];
-                str[k++] = ConstUtils.HEXDIGITS[byte0 >>> 4 & 0xf];
-                str[k++] = ConstUtils.HEXDIGITS[byte0 & 0xf];
-            }
-            return new String(str);
-        } catch (Exception e) {
-            return null;
-        }
-    }
-
-    public static String stringToUnicode(String text) {
-        String result = "";
-        int input;
-        StringReader isr;
-        try {
-            isr = new StringReader(new String(text.getBytes(), "GBK"));
-        } catch (UnsupportedEncodingException e) {
-            return "-1";
-        }
-        try {
-            while ((input = isr.read()) != -1) {
-                result = result + "&#x" + Integer.toHexString(input) + ";";
-
-            }
-        } catch (IOException e) {
-            return "-2";
-        }
-        isr.close();
-        isr = null;
-        return result;
-
-    }
-
-    public static String gb2utf(String inStr) {
-        char temChr;
-        int ascInt;
-        int i;
-        String result = "";
-        if (inStr == null) {
-            inStr = "";
-        }
-        for (i = 0; i < inStr.length(); i++) {
-            temChr = inStr.charAt(i);
-            ascInt = temChr + 0;
-            if (Integer.toHexString(ascInt).length() > 2) {
-                result = result + "&#x" + Integer.toHexString(ascInt) + ";";
-            } else {
-                result = result + temChr;
-            }
-        }
-        return result;
-    }
-
-    public static String gbEncoding(final String gbString) {
-        char[] utfBytes = gbString.toCharArray();
-        String unicodeBytes = "";
-        ArrayList<String> arr = new ArrayList<String>();
-        for (int byteIndex = 0; byteIndex < utfBytes.length; byteIndex++) {
-            String hexB = Integer.toHexString(utfBytes[byteIndex]);
-            if (hexB.length() <= 2) {
-                hexB = "00" + hexB;
-            }
-            arr.add(hexB);
-            unicodeBytes = unicodeBytes + "\\u" + hexB;
-        }
-
-        return unicodeBytes;
-    }
-
-    public static String decodeUnicode(final String dataStr) {
-        int start = 0;
-        int end = 0;
-        final StringBuffer buffer = new StringBuffer();
-        while (start > -1) {
-            end = dataStr.indexOf("\\u", start + 2);
-            String charStr;
-            if (end == -1) {
-                charStr = dataStr.substring(start + 2, dataStr.length());
-            } else {
-                charStr = dataStr.substring(start + 2, end);
-            }
-            char letter = (char) Integer.parseInt(charStr, 16);
-            buffer.append(new Character(letter).toString());
-            start = end;
-        }
-        return buffer.toString();
-    }
-
-    public static String prepad(String s, int length) {
-        return prepad(s, length, ' ');
-    }
-
-    public static String prepad(String s, int length, char c) {
-        int needed = length - s.length();
-        if (needed <= 0) {
-            return s;
-        }
-        char padding[] = new char[needed];
-        java.util.Arrays.fill(padding, c);
-        StringBuffer sb = new StringBuffer(length);
-        sb.append(padding);
-        sb.append(s);
-        return sb.toString();
-    }
-
-    public static String postpad(String s, int length) {
-        return postpad(s, length, ' ');
-    }
-
-    public static String postpad(String s, int length, char c) {
-        int needed = length - s.length();
-        if (needed <= 0) {
-            return s;
-        }
-        char padding[] = new char[needed];
-        java.util.Arrays.fill(padding, c);
-        StringBuffer sb = new StringBuffer(length);
-        sb.append(s);
-        sb.append(padding);
-        return sb.toString();
-    }
-
-    public static String midpad(String s, int length) {
-        return midpad(s, length, ' ');
-    }
-
-    public static String midpad(String s, int length, char c) {
-        int needed = length - s.length();
-        if (needed <= 0) {
-            return s;
-        }
-        int beginning = needed / 2;
-        int end = beginning + needed % 2;
-        char prepadding[] = new char[beginning];
-        java.util.Arrays.fill(prepadding, c);
-        char postpadding[] = new char[end];
-        java.util.Arrays.fill(postpadding, c);
-        StringBuffer sb = new StringBuffer(length);
-        sb.append(prepadding);
-        sb.append(s);
-        sb.append(postpadding);
-        return sb.toString();
-    }
-
-    public static String[] split(String s, String delimiter) {
-        int delimiterLength;
-        int stringLength = s.length();
-        if (delimiter == null || (delimiterLength = delimiter.length()) == 0) {
-            return new String[]{s};
-        }
-        int count;
-        int start;
-        int end;
-        count = 0;
-        start = 0;
-        while ((end = s.indexOf(delimiter, start)) != -1) {
-            count++;
-            start = end + delimiterLength;
-        }
-        count++;
-        String[] result = new String[count];
-        count = 0;
-        start = 0;
-        while ((end = s.indexOf(delimiter, start)) != -1) {
-            result[count] = (s.substring(start, end));
-            count++;
-            start = end + delimiterLength;
-        }
-        end = stringLength;
-        result[count] = s.substring(start, end);
-
-        return (result);
-    }
-
-    public static String[] splitIncludeDelimiters(String s, String delimiter) {
-        int delimiterLength;
-        int stringLength = s.length();
-        if (delimiter == null || (delimiterLength = delimiter.length()) == 0) {
-            return new String[]{s};
-        }
-        int count;
-        int start;
-        int end;
-
-        count = 0;
-        start = 0;
-        while ((end = s.indexOf(delimiter, start)) != -1) {
-            count += 2;
-            start = end + delimiterLength;
-        }
-        count++;
-        String[] result = new String[count];
-        count = 0;
-        start = 0;
-        while ((end = s.indexOf(delimiter, start)) != -1) {
-            result[count] = (s.substring(start, end));
-            count++;
-            result[count] = delimiter;
-            count++;
-            start = end + delimiterLength;
-        }
-        end = stringLength;
-        result[count] = s.substring(start, end);
-        return (result);
-    }
-
-    public static String join(String[] array) {
-        return join(array, "");
-    }
-
-    public static String join(String[] array, String delimiter) {
-        int delimiterLength = delimiter.length();
-        if (array.length == 0) {
-            return "";
-        }
-        if (array.length == 1) {
-            if (array[0] == null) {
-                return "";
-            }
-            return array[0];
-        }
-        int length = 0;
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null) {
-                length += array[i].length();
-            }
-            if (i < array.length - 1) {
-                length += delimiterLength;
-            }
-        }
-        StringBuffer result = new StringBuffer(length);
-        for (int i = 0; i < array.length; i++) {
-            if (array[i] != null) {
-                result.append(array[i]);
-            }
-            if (i < array.length - 1) {
-                result.append(delimiter);
-            }
-        }
-        return result.toString();
-    }
-
-    public static String replace(String s, String find, String replace) {
-        if (replace == null) {
-            replace = "";
-        }
-        int findLength;
-        if (find == null || (findLength = find.length()) == 0) {
-            return s;
-        }
-        int replaceLength = replace.length();
-        int length;
-        int stringLength = s.length();
-        if (findLength == replaceLength) {
-            length = stringLength;
-        } else {
-            int count;
-            int start;
-            int end;
-            count = 0;
-            start = 0;
-            while ((end = s.indexOf(find, start)) != -1) {
-                count++;
-                start = end + findLength;
-            }
-            if (count == 0) {
-                return s;
-            }
-            length = stringLength - (count * (findLength - replaceLength));
-        }
-        int start = 0;
-        int end = s.indexOf(find, start);
-        if (end == -1) {
-            return s;
-        }
-        StringBuffer sb = new StringBuffer(length);
-        while (end != -1) {
-            sb.append(s.substring(start, end));
-            sb.append(replace);
-            start = end + findLength;
-            end = s.indexOf(find, start);
-        }
-        end = stringLength;
-        sb.append(s.substring(start, end));
-        return (sb.toString());
-    }
-
-    public static String escapeHTML(String s) {
-        int length = s.length();
-        int newLength = length;
-        boolean someCharacterEscaped = false;
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            int cint = 0xffff & c;
-            if (cint < 32) {
-                switch (c) {
-                    case '\r':
-                    case '\n':
-                    case '\t':
-                    case '\f': break;
-                    default:
-                        newLength -= 1;
-                        someCharacterEscaped = true;
-                        break;
-                }
-            } else {
-                switch (c) {
-                    case '\"': {
-                        newLength += 5;
-                        someCharacterEscaped = true;
-                    }
-                    break;
-                    case '&':
-                    case '\'': {
-                        newLength += 4;
-                        someCharacterEscaped = true;
-                    }
-                    break;
-                    case '<':
-                    case '>': {
-                        newLength += 3;
-                        someCharacterEscaped = true;
-                    }
-                    break;
-                    default:
-                        break;
-                }
-            }
-        }
-        if (!someCharacterEscaped) {
-            return s;
-        }
-        StringBuffer sb = new StringBuffer(newLength);
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            int cint = 0xffff & c;
-            if (cint < 32) {
-                switch (c) {
-                    case '\r':
-                    case '\n':
-                    case '\t':
-                    case '\f': {
-                        sb.append(c);
-                    }
-                    break;
-                    default:
-                        break;
-                }
-            } else {
-                switch (c) {
-                    case '\"':
-                        sb.append("&quot;");
-                        break;
-                    case '\'':
-                        sb.append("&#39;");
-                        break;
-                    case '&':
-                        sb.append("&amp;");
-                        break;
-                    case '<':
-                        sb.append("&lt;");
-                        break;
-                    case '>':
-                        sb.append("&gt;");
-                        break;
-                    default:
-                        sb.append(c);
-                        break;
-                }
-            }
-        }
-        return sb.toString();
-    }
-
-    public static String escapeSQL(String s) {
-        int length = s.length();
-        int newLength = length;
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            switch (c) {
-                case '\\':
-                case '\"':
-                case '\'':
-                case '\0': newLength += 1;break;
-                default:break;
-            }
-        }
-        if (length == newLength) {
-            return s;
-        }
-        StringBuffer sb = new StringBuffer(newLength);
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            switch (c) {
-                case '\\': sb.append("\\\\");break;
-                case '\"': sb.append("\\\"");break;
-                case '\'': sb.append("\\\'");break;
-                case '\0': sb.append("\\0");break;
-                default: sb.append(c);break;
-            }
-        }
-        return sb.toString();
-    }
-
-    public static String escapeJavaLiteral(String s) {
-        int length = s.length();
-        int newLength = length;
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            switch (c) {
-                case '\"':
-                case '\'':
-                case '\n':
-                case '\r':
-                case '\t':
-                case '\\':
-                    newLength += 1;
-                    break;
-                default:
-                    break;
-            }
-        }
-        if (length == newLength) {
-            // nothing to escape in the string
-            return s;
-        }
-        StringBuffer sb = new StringBuffer(newLength);
-        for (int i = 0; i < length; i++) {
-            char c = s.charAt(i);
-            switch (c) {
-                case '\"': {
-                    sb.append("\\\"");
-                }
-                break;
-                case '\'': {
-                    sb.append("\\\'");
-                }
-                break;
-                case '\n': {
-                    sb.append("\\n");
-                }
-                break;
-                case '\r': {
-                    sb.append("\\r");
-                }
-                break;
-                case '\t': {
-                    sb.append("\\t");
-                }
-                break;
-                case '\\': {
-                    sb.append("\\\\");
-                }
-                break;
-                default: {
-                    sb.append(c);
-                }
-            }
-        }
-        return sb.toString();
-    }
-
-    public static String trim(String s, String c) {
-        int length = s.length();
-        if (c == null) {
-            return s;
-        }
-        int cLength = c.length();
-        if (c.length() == 0) {
-            return s;
-        }
-        int start = 0;
-        int end = length;
-        boolean found;
-        int i;
-        found = false;
-        for (i = 0; !found && i < length; i++) {
-            char ch = s.charAt(i);
-            found = true;
-            for (int j = 0; found && j < cLength; j++) {
-                if (c.charAt(j) == ch) {
-                    found = false;
-                }
-            }
-        }
-        if (!found) {
-            return "";
-        }
-        start = i - 1;
-        found = false;
-        for (i = length - 1; !found && i >= 0; i--) {
-            char ch = s.charAt(i);
-            found = true;
-            for (int j = 0; found && j < cLength; j++) {
-                if (c.charAt(j) == ch) {
-                    found = false;
-                }
-            }
-        }
-        end = i + 2;
-        return s.substring(start, end);
-    }
 
     private static HashMap<String, Integer> htmlEntities = new HashMap<String, Integer>();
 
@@ -1184,6 +338,852 @@ public final class StringUtils {
         htmlEntities.put("euro", new Integer(8364));
     }
 
+    /**
+     *
+     * escape() 函数可对字符串进行编码，这样就可以在所有的计算机上读取该字符串。
+     * @param s
+     * @return
+     */
+    public static String escape(String s) {
+        StringBuffer sb = new StringBuffer();
+        int len = s.length();
+        for (int i = 0; i < len; i++) {
+            int ch = s.charAt(i);
+            if ('A' <= ch && ch <= 'Z') {
+                sb.append((char) ch);
+            } else if ('a' <= ch && ch <= 'z') {
+                sb.append((char) ch);
+            } else if ('0' <= ch && ch <= '9') {
+                sb.append((char) ch);
+            } else if (ch == '-' || ch == '_' || ch == '.' || ch == '!'
+                    || ch == '~' || ch == '*' || ch == '\'' || ch == '('
+                    || ch == ')') {
+                sb.append((char) ch);
+            } else if (ch <= 0x007F) {
+                sb.append(CHAR_PERCENT);
+                sb.append(hex[ch]);
+            } else {
+                sb.append(CHAR_PERCENT);
+                sb.append('u');
+                sb.append(hex[(ch >>> 8)]);
+                sb.append(hex[(0x00FF & ch)]);
+            }
+        }
+        return sb.toString();
+    }
+
+    /**
+     *
+     * unescape() 函数可对通过 escape() 编码的字符串进行解码。
+     * @param s
+     * @return
+     */
+    public static String unescape(String s) {
+        StringBuffer sb = new StringBuffer();
+        int i = 0;
+        int len = s.length();
+        while (i < len) {
+            int ch = s.charAt(i);
+            if ('A' <= ch && ch <= 'Z') {
+                sb.append((char) ch);
+            } else if ('a' <= ch && ch <= 'z') {
+                sb.append((char) ch);
+            } else if ('0' <= ch && ch <= '9') {
+                sb.append((char) ch);
+            } else if (ch == '-' || ch == '_' || ch == '.' || ch == '!'
+                    || ch == '~' || ch == '*' || ch == '\'' || ch == '('
+                    || ch == ')') {
+                sb.append((char) ch);
+            } else if (ch == '%') {
+                int ci = 0;
+                if ('u' != s.charAt(i + 1)) {
+                    ci = (ci << 4) | val[s.charAt(i + 1)];
+                    ci = (ci << 4) | val[s.charAt(i + 2)];
+                    i += 2;
+                } else {
+                    ci = (ci << 4) | val[s.charAt(i + 2)];
+                    ci = (ci << 4) | val[s.charAt(i + 3)];
+                    ci = (ci << 4) | val[s.charAt(i + 4)];
+                    ci = (ci << 4) | val[s.charAt(i + 5)];
+                    i += 5;
+                }
+                sb.append((char) ci);
+            } else {
+                sb.append((char) ch);
+            }
+            i++;
+        }
+        return sb.toString();
+    }
+
+    /**
+     *
+     * 判断字符串是否是null或者是空格
+     * @param s
+     * @return
+     */
+    public static boolean isNullOrSpace(String s){
+        return (s == null || EMPTY.equals(s.trim()));
+    }
+
+    /**
+     * 判断字符串是否是null或者是空字符串（“”）
+     * @param s
+     * @return
+     */
+    public static boolean isNullOrEmpty(String s){
+        return (s == null || EMPTY.equals(s));
+    }
+
+    /**
+     * 字符集转换
+     * @param text
+     * @param oldCharSetName
+     * @param newCharSetName
+     * @return
+     */
+    public static String convertCharSet(String text,String oldCharSetName,String newCharSetName){
+        if(isNullOrEmpty(text)){
+            return text;
+        }
+        String result;
+        try {
+            result = new String(text.getBytes(oldCharSetName), newCharSetName);
+        } catch (Exception e) {
+            result = EMPTY;
+        }
+        return result;
+    }
+
+    /**
+     * url编码
+     * @param text
+     * @return
+     */
+    public static String utf8UrlEncode(String text) {
+        if(isNullOrEmpty(text)){
+            return text;
+        }
+        StringBuffer result = new StringBuffer();
+        for (int i = 0; i < text.length(); i++) {
+            char c = text.charAt(i);
+            if (c >= 0 && c <= 255) {
+                result.append(c);
+            } else {
+                byte[] b = new byte[0];
+                try {
+                    b = Character.toString(c).getBytes(UTF8);
+                } catch (Exception ex) {
+                }
+                for (int j = 0; j < b.length; j++) {
+                    int k = b[j];
+                    if (k < 0) {
+                        k += 256;
+                    }
+                    result.append("%" + Integer.toHexString(k).toUpperCase());
+                }
+            }
+        }
+        return result.toString();
+    }
+
+    /**
+     * url解码
+     * @param text
+     * @return
+     */
+    public static String utf8UrlDecode(String text) {
+        String result = EMPTY;
+        int p;
+        if (!isNullOrEmpty(text)) {
+            text = text.toLowerCase();
+            p = text.indexOf(PERCENT_E);
+            if (p == -1) {
+                return text;
+            }
+            while (p != -1) {
+                result += text.substring(0, p);
+                text = text.substring(p, text.length());
+                if (EMPTY.equals(text) || text.length() < 9) {
+                    return result;
+                }
+                result += codeToWord(text.substring(0, 9));
+                text = text.substring(9, text.length());
+                p = text.indexOf(PERCENT_E);
+            }
+        }
+        return result + text;
+    }
+
+    /**
+     * Unicode字符转文字
+     * @param text
+     * @return
+     */
+    private static String codeToWord(String text) {
+        String result;
+        if (utf8CodeCheck(text)) {
+            byte[] code = new byte[3];
+            code[0] = (byte) (Integer.parseInt(text.substring(1, 3), 16) - 256);
+            code[1] = (byte) (Integer.parseInt(text.substring(4, 6), 16) - 256);
+            code[2] = (byte) (Integer.parseInt(text.substring(7, 9), 16) - 256);
+            try {
+                result = new String(code, UTF8);
+            } catch (UnsupportedEncodingException ex) {
+                result = null;
+            }
+        } else {
+            result = text;
+        }
+        return result;
+    }
+
+    /**
+     * 检测是否是Unicode字符集
+     * @param text
+     * @return
+     */
+    private static boolean utf8CodeCheck(String text) {
+        String sign = "";
+        if (text.startsWith(PERCENT_E)) {
+            for (int p = 0; p != -1;) {
+                p = text.indexOf(STRING_PERCENT, p);
+                if (p != -1) {
+                    p++;
+                }
+                sign += p;
+            }
+        }
+        return "147-1".equals(sign);
+    }
+
+    /**
+     * 是否是utf-8的url
+     * @param text
+     * @return
+     */
+    public static boolean isUtf8Url(String text) {
+        text = text.toLowerCase();
+        int p = text.indexOf(STRING_PERCENT);
+        if (p != -1 && text.length() - p > 9) {
+            text = text.substring(p, p + 9);
+        }
+        return utf8CodeCheck(text);
+    }
+
+    /**
+     * 在字符串s中将find替换为replace（性能较高，待测试）
+     * @param s
+     * @param find
+     * @param replace
+     * @return
+     */
+    public static String replaceStringFast(String s, @NotNull String find, @NotNull String replace) {
+        if (isNullOrEmpty(find)) {
+            return s;
+        }
+        if (isNullOrEmpty(replace)) {
+            replace = EMPTY;
+        }
+        int findLength = find.length();
+        int replaceLength = replace.length();
+        int length;
+        int stringLength = s.length();
+        if (findLength == replaceLength) {
+            length = stringLength;
+        } else {
+            int count;
+            int start;
+            int end;
+            count = 0;
+            start = 0;
+            while ((end = s.indexOf(find, start)) != -1) {
+                count++;
+                start = end + findLength;
+            }
+            if (count == 0) {
+                return s;
+            }
+            length = stringLength - (count * (findLength - replaceLength));
+        }
+        int start = 0;
+        int end = s.indexOf(find, start);
+        if (end == -1) {
+            return s;
+        }
+        StringBuffer sb = new StringBuffer(length);
+        while (end != -1) {
+            sb.append(s.substring(start, end));
+            sb.append(replace);
+            start = end + findLength;
+            end = s.indexOf(find, start);
+        }
+        end = stringLength;
+        sb.append(s.substring(start, end));
+        return (sb.toString());
+    }
+
+    /**
+     * 在字符串strSrc中将strOld替换为strNew（性能略低，待测试）
+     * @param strSrc
+     * @param strOld
+     * @param strNew
+     * @return
+     */
+    public static String replaceStringSlow(String strSrc, @NotNull String strOld, @NotNull String strNew) {
+        if (strSrc == null || strOld == null || strNew == null) {
+            return EMPTY;
+        }
+        int i = 0;
+        if (strOld.equals(strNew)) {
+            return strSrc;
+        }
+        if ((i = strSrc.indexOf(strOld, i)) >= 0) {
+            char[] arr_cSrc = strSrc.toCharArray();
+            char[] arr_cNew = strNew.toCharArray();
+            int intOldLen = strOld.length();
+            StringBuffer buf = new StringBuffer(arr_cSrc.length);
+            buf.append(arr_cSrc, 0, i).append(arr_cNew);
+            i += intOldLen;
+            int j = i;
+            while ((i = strSrc.indexOf(strOld, i)) > 0) {
+                buf.append(arr_cSrc, j, i - j).append(arr_cNew);
+                i += intOldLen;
+                j = i;
+            }
+            buf.append(arr_cSrc, j, arr_cSrc.length - j);
+            return buf.toString();
+        }
+        return strSrc;
+    }
+
+    /**
+     * Html格式字符串转换
+     * @param strSrc
+     * @return
+     */
+    public static String htmlEncode(String strSrc) {
+        if (isNullOrEmpty(strSrc)) {
+            return EMPTY;
+        }
+        char[] arr_cSrc = strSrc.toCharArray();
+        StringBuffer buf = new StringBuffer(arr_cSrc.length);
+        char ch;
+        for (int i = 0; i < arr_cSrc.length; i++) {
+            ch = arr_cSrc[i];
+            buf.append(specialCharacter2String(ch));
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Html格式字符串转换
+     * quotes == 1 将 " 转换为安全字符
+     * quotes == 2 将 ' 转换为安全字符
+     * @param strSrc
+     * @param quotes
+     * @return
+     */
+    public static String htmlEncode(String strSrc, int quotes) {
+        if (isNullOrEmpty(strSrc)) {
+            return EMPTY;
+        }
+        if (quotes == 0) {
+            return htmlEncode(strSrc);
+        }
+        char[] arr_cSrc = strSrc.toCharArray();
+        StringBuffer buf = new StringBuffer(arr_cSrc.length);
+        char ch;
+        for (int i = 0; i < arr_cSrc.length; i++) {
+            ch = arr_cSrc[i];
+            buf.append(specialCharacter2String(ch, quotes));
+        }
+        return buf.toString();
+    }
+
+    /**
+     * Html字符串解码为HTMl
+     * @param strSrc
+     * @return
+     */
+    public static String htmlDecode(String strSrc) {
+        if (isNullOrEmpty(strSrc)) {
+            return EMPTY;
+        }
+        return (strSrc.replaceAll("&lt;", "<")
+                .replaceAll("&gt;", ">")
+                .replaceAll("&quot;", "\"")
+                .replaceAll("&#039;", "'")
+                .replaceAll("&amp;", "&"));
+    }
+
+    /**
+     * md5 加密
+     * @param s
+     * @return
+     */
+    public static String md5(String s) {
+        try {
+            byte[] strTemp = s.getBytes();
+            MessageDigest mdTemp = MessageDigest.getInstance("MD5");
+            mdTemp.update(strTemp);
+            byte[] md = mdTemp.digest();
+            int j = md.length;
+            char[] strs = new char[j * 2];
+            int k = 0;
+            for (int i = 0; i < j; i++) {
+                byte byte0 = md[i];
+                strs[k++] = ConstUtils.HEXDIGITS[byte0 >>> 4 & 0xf];
+                strs[k++] = ConstUtils.HEXDIGITS[byte0 & 0xf];
+            }
+            return new String(strs);
+        } catch (Exception e) {
+            return EMPTY;
+        }
+    }
+
+    /**
+     * 字符串转为Unicode编码
+     * @param text
+     * @return
+     */
+    public static String stringToUnicode(String text) {
+        StringBuilder sb = new StringBuilder();
+        int input;
+        StringReader isr = null;
+        try {
+            isr = new StringReader(new String(text.getBytes(), UTF8));
+            while ((input = isr.read()) != -1) {
+                sb.append("&#x" + Integer.toHexString(input) + ";");
+            }
+        } catch (UnsupportedEncodingException e) {
+            return EMPTY;
+        } catch (IOException e) {
+            return EMPTY;
+        } finally {
+            CloseUtils.closeIO(isr);
+        }
+
+        return sb.toString();
+
+    }
+
+    public static String gb2utf(String inStr) {
+        if (isNullOrEmpty(inStr)) {
+            return EMPTY;
+        }
+        StringBuilder sb = new StringBuilder();
+        char[] cs = inStr.toCharArray();
+        for(char c : cs){
+            String s = Integer.toHexString(c);
+            if (s.length() > 2) {
+                sb.append("&#x");
+                sb.append(s);
+                sb.append(";");
+            } else {
+                sb.append(c);
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String gbEncoding(final String gbString) {
+        char[] cs = gbString.toCharArray();
+        StringBuilder sb = new StringBuilder();
+        for (char c : cs){
+            String hexB = Integer.toHexString(c);
+            sb.append("\\u");
+            if (hexB.length() <= 2) {
+                sb.append("00");
+            }
+            sb.append(hexB);
+        }
+        return sb.toString();
+    }
+
+    public static String decodeUnicode(final String dataStr) {
+        int start = 0;
+        int end ;
+        final StringBuffer buffer = new StringBuffer();
+        while (start > -1) {
+            end = dataStr.indexOf("\\u", start + 2);
+            String charStr;
+            if (end == -1) {
+                charStr = dataStr.substring(start + 2, dataStr.length());
+            } else {
+                charStr = dataStr.substring(start + 2, end);
+            }
+            char letter = (char) Integer.parseInt(charStr, 16);
+            buffer.append(new Character(letter).toString());
+            start = end;
+        }
+        return buffer.toString();
+    }
+
+    public static String prepad(String s, int length) {
+        return prepad(s, length, ' ');
+    }
+
+    public static String prepad(String s, int length, char c) {
+        int needed = length - s.length();
+        if (needed <= 0) {
+            return s;
+        }
+        char padding[] = new char[needed];
+        java.util.Arrays.fill(padding, c);
+        StringBuffer sb = new StringBuffer(length);
+        sb.append(padding);
+        sb.append(s);
+        return sb.toString();
+    }
+
+    public static String postpad(String s, int length) {
+        return postpad(s, length, ' ');
+    }
+
+    public static String postpad(String s, int length, char c) {
+        int needed = length - s.length();
+        if (needed <= 0) {
+            return s;
+        }
+        char padding[] = new char[needed];
+        java.util.Arrays.fill(padding, c);
+        StringBuffer sb = new StringBuffer(length);
+        sb.append(s);
+        sb.append(padding);
+        return sb.toString();
+    }
+
+    public static String midpad(String s, int length) {
+        return midpad(s, length, ' ');
+    }
+
+    public static String midpad(String s, int length, char c) {
+        int needed = length - s.length();
+        if (needed <= 0) {
+            return s;
+        }
+        int beginning = needed / 2;
+        int end = beginning + needed % 2;
+        char prepadding[] = new char[beginning];
+        java.util.Arrays.fill(prepadding, c);
+        char postpadding[] = new char[end];
+        java.util.Arrays.fill(postpadding, c);
+        StringBuffer sb = new StringBuffer(length);
+        sb.append(prepadding);
+        sb.append(s);
+        sb.append(postpadding);
+        return sb.toString();
+    }
+
+    public static String[] split(String s, String delimiter) {
+        if (isNullOrEmpty(delimiter)) {
+            return new String[]{s};
+        }
+        int stringLength = s.length();
+        int delimiterLength = delimiter.length();
+        int count = 0;
+        int start = 0;
+        int end;
+        while ((end = s.indexOf(delimiter, start)) != -1) {
+            count++;
+            start = end + delimiterLength;
+        }
+        count++;
+        String[] result = new String[count];
+        count = 0;
+        start = 0;
+        while ((end = s.indexOf(delimiter, start)) != -1) {
+            result[count] = (s.substring(start, end));
+            count++;
+            start = end + delimiterLength;
+        }
+        end = stringLength;
+        result[count] = s.substring(start, end);
+        return (result);
+    }
+
+    public static String[] splitIncludeDelimiters(String s, String delimiter) {
+        if (isNullOrEmpty(delimiter)) {
+            return new String[]{s};
+        }
+        int stringLength = s.length();
+        int delimiterLength = delimiter.length();
+        int count = 0;
+        int start = 0;
+        int end;
+        while ((end = s.indexOf(delimiter, start)) != -1) {
+            count += 2;
+            start = end + delimiterLength;
+        }
+        count++;
+        String[] result = new String[count];
+        count = 0;
+        start = 0;
+        while ((end = s.indexOf(delimiter, start)) != -1) {
+            result[count] = (s.substring(start, end));
+            count++;
+            result[count] = delimiter;
+            count++;
+            start = end + delimiterLength;
+        }
+        end = stringLength;
+        result[count] = s.substring(start, end);
+        return (result);
+    }
+
+    public static String join(String[] array) {
+        return join(array, "");
+    }
+
+    public static String join(String[] array, String delimiter) {
+        if (CollectionUtils.isNullOrEmpty(array)) {
+            return EMPTY;
+        }
+        if (array.length == 1) {
+            if (isNullOrEmpty(array[0])) {
+                return EMPTY;
+            }
+            return array[0];
+        }
+        int length = 0;
+        int delimiterLength = delimiter.length();
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                length += array[i].length();
+            }
+            if (i < array.length - 1) {
+                length += delimiterLength;
+            }
+        }
+        StringBuffer result = new StringBuffer(length);
+        for (int i = 0; i < array.length; i++) {
+            if (array[i] != null) {
+                result.append(array[i]);
+            }
+            if (i < array.length - 1) {
+                result.append(delimiter);
+            }
+        }
+        return result.toString();
+    }
+
+    public static String escapeHTML(String s) {
+        int length = s.length();
+        int newLength = length;
+        boolean someCharacterEscaped = false;
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            int cint = 0xffff & c;
+            if (cint < 32) {
+                switch (c) {
+                    case '\r':
+                    case '\n':
+                    case '\t':
+                    case '\f': break;
+                    default:
+                        newLength -= 1;
+                        someCharacterEscaped = true;
+                        break;
+                }
+            } else {
+                switch (c) {
+                    case '\"': {
+                        newLength += 5;
+                        someCharacterEscaped = true;
+                    }
+                    break;
+                    case '&':
+                    case '\'': {
+                        newLength += 4;
+                        someCharacterEscaped = true;
+                    }
+                    break;
+                    case '<':
+                    case '>': {
+                        newLength += 3;
+                        someCharacterEscaped = true;
+                    }
+                    break;
+                    default:
+                        break;
+                }
+            }
+        }
+        if (!someCharacterEscaped) {
+            return s;
+        }
+        StringBuffer sb = new StringBuffer(newLength);
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            int cint = 0xffff & c;
+            if (cint < 32) {
+                switch (c) {
+                    case '\r':
+                    case '\n':
+                    case '\t':
+                    case '\f': {
+                        sb.append(c);
+                    }
+                    break;
+                    default:
+                        break;
+                }
+            } else {
+                switch (c) {
+                    case '\"':
+                        sb.append("&quot;");
+                        break;
+                    case '\'':
+                        sb.append("&#39;");
+                        break;
+                    case '&':
+                        sb.append("&amp;");
+                        break;
+                    case '<':
+                        sb.append("&lt;");
+                        break;
+                    case '>':
+                        sb.append("&gt;");
+                        break;
+                    default:
+                        sb.append(c);
+                        break;
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String escapeSQL(String s) {
+        int length = s.length();
+        int newLength = length;
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '\\':
+                case '\"':
+                case '\'':
+                case '\0': newLength += 1;break;
+                default:break;
+            }
+        }
+        if (length == newLength) {
+            return s;
+        }
+        StringBuffer sb = new StringBuffer(newLength);
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '\\': sb.append("\\\\");break;
+                case '\"': sb.append("\\\"");break;
+                case '\'': sb.append("\\\'");break;
+                case '\0': sb.append("\\0");break;
+                default: sb.append(c);break;
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String escapeJavaLiteral(String s) {
+        int length = s.length();
+        int newLength = length;
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '\"':
+                case '\'':
+                case '\n':
+                case '\r':
+                case '\t':
+                case '\\':
+                    newLength += 1;
+                    break;
+                default:
+                    break;
+            }
+        }
+        if (length == newLength) {
+            // nothing to escape in the string
+            return s;
+        }
+        StringBuffer sb = new StringBuffer(newLength);
+        for (int i = 0; i < length; i++) {
+            char c = s.charAt(i);
+            switch (c) {
+                case '\"': {
+                    sb.append("\\\"");
+                }
+                break;
+                case '\'': {
+                    sb.append("\\\'");
+                }
+                break;
+                case '\n': {
+                    sb.append("\\n");
+                }
+                break;
+                case '\r': {
+                    sb.append("\\r");
+                }
+                break;
+                case '\t': {
+                    sb.append("\\t");
+                }
+                break;
+                case '\\': {
+                    sb.append("\\\\");
+                }
+                break;
+                default: {
+                    sb.append(c);
+                }
+            }
+        }
+        return sb.toString();
+    }
+
+    public static String trim(String s, String c) {
+        int length = s.length();
+        if (c == null) {
+            return s;
+        }
+        int cLength = c.length();
+        if (c.length() == 0) {
+            return s;
+        }
+        int start = 0;
+        int end = length;
+        boolean found;
+        int i;
+        found = false;
+        for (i = 0; !found && i < length; i++) {
+            char ch = s.charAt(i);
+            found = true;
+            for (int j = 0; found && j < cLength; j++) {
+                if (c.charAt(j) == ch) {
+                    found = false;
+                }
+            }
+        }
+        if (!found) {
+            return "";
+        }
+        start = i - 1;
+        found = false;
+        for (i = length - 1; !found && i >= 0; i--) {
+            char ch = s.charAt(i);
+            found = true;
+            for (int j = 0; found && j < cLength; j++) {
+                if (c.charAt(j) == ch) {
+                    found = false;
+                }
+            }
+        }
+        end = i + 2;
+        return s.substring(start, end);
+    }
+
     public static String unescapeHTML(String s) {
         StringBuffer result = new StringBuffer(s.length());
         int ampInd = s.indexOf("&");
@@ -1352,13 +1352,5 @@ public final class StringUtils {
 
     public static boolean endsWithAnyIgnoreCase(String s, String[] terms) {
         return getEndsWithAnyIgnoreCasePattern(terms).matcher(s).matches();
-    }
-
-    public static void main(String[] args) {
-        long dt1 = System.nanoTime();
-        //System.out.println(replace("aassddasd","ss","")); //160143
-        System.out.println(replace1("aassddasd","ss","")); // 245191
-        long dt2 = System.nanoTime();
-        System.out.println(dt2 - dt1);
     }
 }
