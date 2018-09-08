@@ -8,7 +8,10 @@ import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.IOException;
+
 import org.apache.poi.ss.usermodel.DateUtil;
+import org.springframework.web.multipart.MultipartFile;
 
 public final class ExcelUtil {
 
@@ -48,6 +51,28 @@ public final class ExcelUtil {
             }
         } catch (OfficeXmlFileException e) {
             return null;
+        }
+        return workbook;
+    }
+
+    public static Workbook openWorkbookForRead(MultipartFile file, String filename){
+
+        if(file == null || StringUtils.isNullOrEmpty(filename)){
+            return null;
+        }
+        Workbook workbook = null;
+        try {
+            //默认读取excel2007
+            if (filename.endsWith(XLSX)) {
+                workbook = new XSSFWorkbook(file.getInputStream());
+            }else if(filename.endsWith(XLS)) {
+                //读取excel2003
+                workbook = new HSSFWorkbook(file.getInputStream());
+            }
+        } catch (OfficeXmlFileException e) {
+            return null;
+        } catch (IOException e) {
+            e.printStackTrace();
         }
         return workbook;
     }
