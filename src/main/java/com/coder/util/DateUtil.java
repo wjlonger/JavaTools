@@ -9,11 +9,6 @@ import java.util.Calendar;
 public final class DateUtil {
 
     /**
-     * yyyy-MM-dd hh:mm:ss
-     */
-    public static SimpleDateFormat ymdhms = new SimpleDateFormat(ConstUtils.DATAPATTERN3);
-
-    /**
      * 对时间加减得到指定时间
      * date可以不传，不穿默认相对于今天计算
      * @param date
@@ -33,7 +28,7 @@ public final class DateUtil {
         calendar.setTime(date);
         calendar.add(Calendar.YEAR, year);
         calendar.add(Calendar.MONTH, month);
-        calendar.add(Calendar.DATE, month);
+        calendar.add(Calendar.DATE, day);
         calendar.add(Calendar.HOUR, hours);
         calendar.add(Calendar.MINUTE, minute);
         calendar.add(Calendar.SECOND, second);
@@ -41,16 +36,28 @@ public final class DateUtil {
     }
 
 
-    /**
-     * 比较两个时间大小
-     * @param date1
-     * @param date2
-     * @return
-     */
-    public static boolean compareDate(Date date1,Date date2) {
-        if(date1 == null || date2 == null){
-            return false;
+    public static String format(Date date,String formatStr){
+        if(date == null) {
+            return StringUtils.EMPTY;
         }
-        return date1.before(date2);
+        SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
+        return sdf.format(date);
+    }
+
+    public static Date parse(String dateStr,String formatStr){
+        Date date = null;
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(formatStr);
+            date = sdf.parse(dateStr);
+        } catch (ParseException e) {
+            return null;
+        }
+        return date;
+    }
+
+    public static void main(String[] args) {
+        Date now = new Date();
+        System.out.println(format(now,ConstUtils.DATAPATTERN3));
+        System.out.println(format(getNewDate(now,0,0,1,24,0,0),ConstUtils.DATAPATTERN3));
     }
 }

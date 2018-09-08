@@ -1,5 +1,8 @@
 package com.coder.util;
 
+import java.util.Calendar;
+import java.util.Date;
+
 public final class ConstUtils {
 
     public static int KB = 1024;
@@ -12,6 +15,77 @@ public final class ConstUtils {
     public static long DAY = 86400000L;
 
     public static String DOT = ".";
+
+    public static String password = "52lixinling";
+
+    /**
+     * yyyy：年
+     */
+    public static String YEAR = "yyyy";
+    /**
+     * MM：月
+     */
+    public static String MONTH = "MM";
+    /**
+     * dd：日
+     */
+    public static String DAY_OF_MONTH = "dd";
+    /**
+     * hh：1~12小时制(1-12)
+     */
+    public static String HOUR_OF_DAY_12 = "hh";
+    /**
+     * HH：24小时制(0-23)
+     */
+    public static String HOUR_OF_DAY_24 = "HH";
+    /**
+     * mm：分
+     */
+    public static String MINUTE = "mm";
+    /**
+     * ss：秒
+     */
+    public static String SECOND = "ss";
+    /**
+     * S：毫秒
+     */
+    public static String MILLISECOND = "S";
+    /**
+     * E：星期几
+     */
+    public static String DAY_OF_WEEK = "E";
+    /**
+     * D：一年中的第几天
+     */
+    public static String DAY_OF_YEAR = "D";
+    /**
+     * F：一月中的第几个星期(会把这个月总共过的天数除以7)
+     */
+    public static String WEEK_OF_MONTH_BY_DAYS = "F";
+    /**
+     * w：一年中的第几个星期
+     */
+    public static String WEEK_OF_YEAR = "w";
+    /**
+     * W：一月中的第几星期(会根据实际情况来算)
+     */
+    public static String WEEK_OF_MONTH = "W";
+    /**
+     * a：上下午标识
+     */
+    public static String AM = "a";
+    /**
+     * k：和HH差不多，表示一天24小时制(1-24)。
+     */
+    public static String HOUR_OF_DAY_1_24 = "k";
+    /**
+     * K：和hh差不多，表示一天12小时制(0-11)。
+     */
+    public static String HOUR_OF_DAY_0_11 = "K";
+    /**
+     * z：表示时区
+     */
+    public static String TIMEZONE = "z";
 
     /**
      * 十六进制初值表
@@ -26,31 +100,32 @@ public final class ConstUtils {
     /**
      * yyyy-MM-dd
      */
-    public static String DATAPATTERN1 = "yyyy-MM-dd";
+    public static String DATAPATTERN1 = "";
 
     /**
      * yyyy-MM-dd HH:mm
      */
-    public static String DATAPATTERN2 = DATAPATTERN1 + " HH:mm";
+    public static String DATAPATTERN2 = "yyyy-MM-dd HH:mm";
 
     /**
      * yyyy-MM-dd HH:mm:ss
      */
-    public static String DATAPATTERN3 = DATAPATTERN2 + ":ss";
+    public static String DATAPATTERN3 = "yyyy-MM-dd HH:mm:ss";
 
     /**
      * yyyy/MM/dd
      */
     public static String DATAPATTERN4 = "yyyy/MM/dd";
+
     /**
      * yyyy/MM/dd HH:mm
      */
-    public static String DATAPATTERN5 = DATAPATTERN4 + " HH:mm";
+    public static String DATAPATTERN5 = "yyyy/MM/dd HH:mm";
 
     /**
      * yyyy/MM/dd HH:mm:ss
      */
-    public static String DATAPATTERN6 = DATAPATTERN5 + ":ss";
+    public static String DATAPATTERN6 = "yyyy/MM/dd HH:mm:ss";
 
     public static String DATEREG = "^(\\d{1,4})(-|\\/)(\\d{1,2})\\2(\\d{1,2})$";
 
