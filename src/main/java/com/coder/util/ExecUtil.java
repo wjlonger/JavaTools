@@ -2,9 +2,9 @@ package com.coder.util;
 
 import java.io.*;
 
-public final class ExecHelper {
+public final class ExecUtil {
 
-	private ExecHelper(Process process, String charset) throws IOException {
+	private ExecUtil(Process process, String charset) throws IOException {
 		StringBuffer output = new StringBuffer();
 		StringBuffer error = new StringBuffer();
 
@@ -78,35 +78,35 @@ public final class ExecHelper {
 	private static final String WINDOWSME = "Windows ME";
 	private static final String WINDOWS = "Windows";
 
-	public static ExecHelper exec(String[] cmdarray) throws IOException {
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray), null);
+	public static ExecUtil exec(String[] cmdarray) throws IOException {
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray), null);
 	}
 
-	public static ExecHelper exec(String[] cmdarray, String[] envp) throws IOException {
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray, envp), null);
+	public static ExecUtil exec(String[] cmdarray, String[] envp) throws IOException {
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray, envp), null);
 	}
 
-	public static ExecHelper exec(String[] cmdarray, String[] envp, File dir) throws IOException {
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray, envp), null);
+	public static ExecUtil exec(String[] cmdarray, String[] envp, File dir) throws IOException {
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray, envp), null);
 	}
 
-	public static ExecHelper exec(String[] cmdarray, String charset) throws IOException {
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray), charset);
+	public static ExecUtil exec(String[] cmdarray, String charset) throws IOException {
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray), charset);
 	}
 
-	public static ExecHelper exec(String[] cmdarray, String[] envp, String charset) throws IOException {
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray, envp), charset);
+	public static ExecUtil exec(String[] cmdarray, String[] envp, String charset) throws IOException {
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray, envp), charset);
 	}
 
-	public static ExecHelper exec(String[] cmdarray, String[] envp, File dir, String charset) throws IOException {
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray, envp), charset);
+	public static ExecUtil exec(String[] cmdarray, String[] envp, File dir, String charset) throws IOException {
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray, envp), charset);
 	}
 
-	public static ExecHelper execUsingShell(String command) throws IOException {
+	public static ExecUtil execUsingShell(String command) throws IOException {
 		return execUsingShell(command, null);
 	}
 
-	public static ExecHelper execUsingShell(String command, String charset) throws IOException {
+	public static ExecUtil execUsingShell(String command, String charset) throws IOException {
 		if (command == null) {
 			throw new NullPointerException();
 		}
@@ -119,7 +119,7 @@ public final class ExecHelper {
 		} else {
 			cmdarray = new String[]{"/bin/sh", "-c", command};
 		}
-		return new ExecHelper(Runtime.getRuntime().exec(cmdarray), charset);
+		return new ExecUtil(Runtime.getRuntime().exec(cmdarray), charset);
 	}
 
 	private String output;
