@@ -45,6 +45,9 @@ public final class DateUtil {
     }
 
     public static Date parse(String dateStr,String formatStr){
+        if(StringUtils.isNullOrEmpty(dateStr) || StringUtils.isNullOrEmpty(formatStr)){
+            return null;
+        }
         Date date = null;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(formatStr);

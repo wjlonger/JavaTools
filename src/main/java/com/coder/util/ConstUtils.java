@@ -100,7 +100,7 @@ public final class ConstUtils {
     /**
      * yyyy-MM-dd
      */
-    public static String DATAPATTERN1 = "";
+    public static String DATAPATTERN1 = "yyyy-MM-dd";
 
     /**
      * yyyy-MM-dd HH:mm
