@@ -1,14 +1,9 @@
 package com.coder.util;
 
-import com.sun.istack.internal.NotNull;
-import sun.invoke.empty.Empty;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 import java.util.regex.Pattern;
 
@@ -578,7 +573,7 @@ public final class StringUtils {
      * @param replace
      * @return
      */
-    public static String replaceStringFast(String s, @NotNull String find, @NotNull String replace) {
+    public static String replaceStringFast(String s, String find, String replace) {
         if (isNullOrEmpty(find)) {
             return s;
         }
@@ -630,7 +625,7 @@ public final class StringUtils {
      * @param strNew
      * @return
      */
-    public static String replaceStringSlow(String strSrc, @NotNull String strOld, @NotNull String strNew) {
+    public static String replaceStringSlow(String strSrc, String strOld, String strNew) {
         if (strSrc == null || strOld == null || strNew == null) {
             return EMPTY;
         }

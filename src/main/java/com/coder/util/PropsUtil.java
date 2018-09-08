@@ -55,7 +55,7 @@ public final class PropsUtil {
                 h.put(paramName, props.getProperty(paramName));
             }
         } catch (Exception e) {
-            return new HashMap();
+            return new HashMap(0);
         }
         return h;
     }
