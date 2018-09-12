@@ -1,4 +1,5 @@
 package com.coder.util;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -366,6 +367,23 @@ public final class StringUtils {
         return null;
     }
 
+    /**
+     * null 转换为 empty
+     * @param str
+     * @return
+     */
+    public static String null2Empty(String str){
+        return str == null ? EMPTY : str;
+    }
+
+    /**
+     * empty 转换为 null
+     * @param str
+     * @return
+     */
+    public static String empty2Null(String str){
+        return EMPTY.equals(str) ? null : str;
+    }
     /**
      *
      * escape() 函数可对字符串进行编码，这样就可以在所有的计算机上读取该字符串。
