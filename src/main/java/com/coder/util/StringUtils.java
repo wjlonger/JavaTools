@@ -1,5 +1,4 @@
 package com.coder.util;
-
 import java.io.IOException;
 import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
@@ -14,16 +13,16 @@ import static com.coder.util.ConvertUtils.specialCharacter2String;
  */
 public final class StringUtils {
 
-    public static final String EMPTY = "";
-    public static final String GB2312 = "GB2312";
-    public static final String ISO88591 = "ISO-8859-1";
-    public static final String UTF8 = "UTF-8";
-    public static final String UTF16 = "UTF16";
-    public static final String UTF32 = "UTF32";
-    public static final String GBK = "GBK";
-    public static final String PERCENT_E = "%e";
-    public static final char CHAR_PERCENT = '%';
-    public static final String STRING_PERCENT = "%";
+    public static String EMPTY = "";
+    public static String GB2312 = "GB2312";
+    public static String ISO88591 = "ISO-8859-1";
+    public static String UTF8 = "UTF-8";
+    public static String UTF16 = "UTF16";
+    public static String UTF32 = "UTF32";
+    public static String GBK = "GBK";
+    public static String PERCENT_E = "%e";
+    public static char CHAR_PERCENT = '%';
+    public static String STRING_PERCENT = "%";
 
 
     private static final String[] hex = { "00", "01", "02", "03", "04", "05",
@@ -75,6 +74,16 @@ public final class StringUtils {
             0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
             0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F,
             0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F, 0x3F };
+    private static String[] SENSITIVE_WORDS= {
+            "and"   ,"exec"    ,"execute" ,"insert"  ,"select","delete",
+            "update","count"   ,"drop"    ,"chr"     ,"mid"   ,"master", "truncate",
+            "char"  ,"declare" ,"sitename","net user","xp_cmdshell",
+            "like"  ,"and"     ,"exec"    ,"execute" ,"insert","create","drop",
+            "table" ,"from"    ,"grant"   ,"union"   ,"where",
+            "select","delete"  ,"update"  ,"order"   ,"by","count","chr","mid",
+            "master","truncate","char"    ,"declare" ,"or","use","group_concat","column_name",
+            "information_schema.columns","table_schema" };
+    private static String[] SENSITIVE_CHARS = {"*","'",";","or","-","--","+","//","/","%","#","="};
 
     private static HashMap<String, Integer> htmlEntities = new HashMap<String, Integer>();
 
@@ -331,6 +340,30 @@ public final class StringUtils {
         htmlEntities.put("lsaquo", new Integer(8249));
         htmlEntities.put("rsaquo", new Integer(8250));
         htmlEntities.put("euro", new Integer(8364));
+    }
+
+    /**
+     * 过滤字符串中敏感字符得到可安全用于执行SQL的字符串
+     * @param sql
+     * @return
+     */
+    public static String toSafeDataBaseString(String sql){
+        if(!isNullOrEmpty(sql)){
+            sql = sql.toLowerCase();
+            for (int i = 0; i < SENSITIVE_WORDS.length; i++) {
+                if (sql.indexOf(SENSITIVE_WORDS[i]) != -1) {
+                    //正则替换词语，无视大小写
+                    sql = sql.replaceAll("(?i)"+SENSITIVE_WORDS[i],EMPTY);
+                }
+            }
+            for (int i = 0; i < SENSITIVE_CHARS.length; i++) {
+                if (sql.indexOf(SENSITIVE_CHARS[i]) >= 0) {
+                    sql = sql.replaceAll(SENSITIVE_CHARS[i],EMPTY);
+                }
+            }
+            return isNullOrEmpty(sql) || isNullOrSpace(sql) ? null : sql;
+        }
+        return null;
     }
 
     /**
