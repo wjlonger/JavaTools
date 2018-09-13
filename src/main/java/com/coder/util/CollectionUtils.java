@@ -6,8 +6,25 @@ public final class CollectionUtils {
 
     private CollectionUtils(){};
 
-    public static boolean isNullOrEmpty(Collection collection){
+    public static boolean isNullOrEmpty(Collection<Object> collection){
         return collection == null || collection.size() == 0;
+    }
+
+    /**
+     * 严格的空集合
+     * 如果说collection不是null且size大于0，但是元素为null 则也为空集合
+     * @param collection
+     * @return
+     */
+    public static boolean isNullOrEmptyStrict(Collection<Object> collection){
+        if(collection != null && collection.size() > 0){
+            for(Object obj :collection ){
+                if(obj != null){
+                    return false;
+                }
+            }
+        }
+        return true;
     }
 
     public static boolean isNullOrEmpty(Object[] collection){
