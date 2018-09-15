@@ -6,7 +6,7 @@ import java.text.ParseException;
 import java.util.Calendar;
 
 
-public final class DateUtil {
+public final class DateUtils {
 
     /**
      * 对时间加减得到指定时间

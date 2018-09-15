@@ -3,7 +3,7 @@ package com.coder.util;
 import java.util.*;
 import java.util.regex.*;
 
-public final class RegExUtil {
+public final class RegExUtils {
 
     public static final boolean ereg(String pattern, String str) throws PatternSyntaxException {
         try {

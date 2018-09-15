@@ -387,7 +387,7 @@ public final class FileUtil {
     public static int countPics(String id, String dtime, String extensions) {
         int counts = 0;
         MyFileFilter mfilter = new MyFileFilter(extensions.split(","));
-        PropsUtil pu = new PropsUtil();
+        PropsUtils pu = new PropsUtils();
         String PICROOT = pu.readSingleProps("DestinationsPICROOT").trim();
         String path = PICROOT + "/" + dtime.substring(0, 10) + "/";
         File lfile = new File(path);

@@ -13,7 +13,7 @@ import java.io.IOException;
 import org.apache.poi.ss.usermodel.DateUtil;
 import org.springframework.web.multipart.MultipartFile;
 
-public final class ExcelUtil {
+public final class ExcelUtils {
 
     private static final String XLSX = "xlsx";
     private static final String XLS = "xls";

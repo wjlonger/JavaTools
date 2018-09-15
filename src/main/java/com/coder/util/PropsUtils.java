@@ -3,9 +3,9 @@ package com.coder.util;
 import java.util.*;
 import java.io.*;
 
-public final class PropsUtil {
+public final class PropsUtils {
 
-    public PropsUtil() {
+    public PropsUtils() {
     }
 
     public String getPropsFilePath() {

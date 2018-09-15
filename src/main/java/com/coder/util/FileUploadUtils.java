@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-public final class FileUploadUtil {
+public final class FileUploadUtils {
 
     private String tempPath = null;
 
@@ -29,12 +29,12 @@ public final class FileUploadUtil {
 
     private boolean isSmallPic = false;
 
-    public FileUploadUtil(String tempPath, String destinationPath) {
+    public FileUploadUtils(String tempPath, String destinationPath) {
         this.tempPath = tempPath;
         this.dstPath = destinationPath;
     }
 
-    public FileUploadUtil(String tempPath, String destinationPath, HttpServletRequest fileuploadRequest) {
+    public FileUploadUtils(String tempPath, String destinationPath, HttpServletRequest fileuploadRequest) {
         this.tempPath = tempPath;
         this.dstPath = destinationPath;
         this.fileuploadReq = fileuploadRequest;

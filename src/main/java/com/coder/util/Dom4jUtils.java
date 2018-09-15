@@ -13,7 +13,7 @@ import java.net.URL;
 import java.util.Iterator;
 import java.util.List;
 
-public final class Dom4jUtil {
+public final class Dom4jUtils {
 
     public Document parse(URL url) throws DocumentException {
         SAXReader reader = new SAXReader();
