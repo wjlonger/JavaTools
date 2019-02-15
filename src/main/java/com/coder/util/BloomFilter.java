@@ -10,7 +10,7 @@ public class BloomFilter {
     private BitSet bits = new BitSet(BIT_SIZE);
     private Hash[] func = new Hash[seeds.length];//用于存储8个随机哈希值对象
 
-    public BloomFilter(){
+    public BloomFilter() {
         for(int i = 0; i < seeds.length; i++){
             func[i] = new Hash(BIT_SIZE, seeds[i]);
         }
@@ -19,8 +19,7 @@ public class BloomFilter {
     /**
      * 像过滤器中添加字符串
      */
-    public void addValue(String value)
-    {
+    public void addValue(String value) {
         //将字符串value哈希为8个或多个整数，然后在这些整数的bit上变为1
         if(value != null){
             for(Hash f : func)
@@ -32,8 +31,7 @@ public class BloomFilter {
     /**
      * 判断字符串是否包含在布隆过滤器中
      */
-    public boolean contains(String value)
-    {
+    public boolean contains(String value) {
         if(value == null)
             return false;
 
@@ -49,7 +47,7 @@ public class BloomFilter {
      * 随机哈希值对象
      */
 
-    public static class Hash{
+    public static class Hash {
         private int size;//二进制向量数组大小
         private int seed;//随机数种子
 
@@ -61,7 +59,7 @@ public class BloomFilter {
         /**
          * 计算哈希值(也可以选用别的恰当的哈希函数)
          */
-        public int hash(String value){
+        public int hash(String value) {
             int result = 0;
             int len = value.length();
             for(int i = 0; i < len; i++){
